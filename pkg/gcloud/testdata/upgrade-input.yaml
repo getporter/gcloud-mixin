@@ -1,0 +1,11 @@
+upgrade:
+  - gcloud:
+      description: "Tag VM"
+      groups:
+        - compute
+        - instances
+      command: update
+      arguments:
+        - myinst
+      flags:
+        update-labels: "color=blue,ready=true"

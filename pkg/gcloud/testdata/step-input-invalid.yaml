@@ -1,0 +1,8 @@
+gcloud:
+  description: "Configure SSH"
+  groups: compute
+  command: config-ssh
+  flags:
+    foo: bar
+    env:
+    - foo: stuff

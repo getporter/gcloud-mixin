@@ -1,0 +1,8 @@
+install:
+  - gcloud:
+      description: "Configure SSH"
+      groups: compute
+      operation: config-ssh
+      flags:
+        ssh-config-file: ./gce-ssh-config
+        ssh-key-file: ./gce-ssh-key

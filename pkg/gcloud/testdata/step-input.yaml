@@ -1,0 +1,11 @@
+gcloud:
+  description: "Create VM"
+  groups:
+  - compute
+  - instances
+  command: create
+  arguments:
+  - myinst
+  flags:
+    hostname: "example.com"
+    labels: "FOO=BAR,STUFF=THINGS"

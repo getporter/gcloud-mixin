@@ -1,0 +1,7 @@
+list:
+  - gcloud:
+      description: "List VMs"
+      groups:
+        - compute
+        - instances
+      command: list

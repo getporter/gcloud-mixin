@@ -1,0 +1,11 @@
+uninstall:
+  - gcloud:
+      description: "Deprovision VM"
+      groups:
+        - compute
+        - instances
+      command: delete
+      arguments:
+        - myinst
+      flags:
+        delete-disks: all
