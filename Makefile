@@ -30,7 +30,7 @@ endif
 REGISTRY ?= $(USER)
 
 .PHONY: build
-build: build-client build-runtime
+build: build-client build-runtime clean-packr
 
 build-runtime: generate
 	mkdir -p $(BINDIR)
@@ -42,7 +42,6 @@ build-client: generate
 
 generate: packr2
 	go generate ./...
-	$(MAKE) clean-packr
 
 HAS_PACKR2 := $(shell command -v packr2)
 packr2:
@@ -50,11 +49,12 @@ ifndef HAS_PACKR2
 	go get -u github.com/gobuffalo/packr/v2/packr2
 endif
 
-xbuild-all:
+xbuild-all: generate
 	$(foreach OS, $(SUPPORTED_PLATFORMS), \
 		$(foreach ARCH, $(SUPPORTED_ARCHES), \
 				$(MAKE) $(MAKE_OPTS) CLIENT_PLATFORM=$(OS) CLIENT_ARCH=$(ARCH) MIXIN=$(MIXIN) xbuild; \
 		))
+	$(MAKE) clean-packr
 
 xbuild: $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT)
 $(BINDIR)/$(VERSION)/$(MIXIN)-$(CLIENT_PLATFORM)-$(CLIENT_ARCH)$(FILE_EXT):
