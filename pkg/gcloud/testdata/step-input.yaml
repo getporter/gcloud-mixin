@@ -9,3 +9,7 @@ gcloud:
   flags:
     hostname: "example.com"
     labels: "FOO=BAR,STUFF=THINGS"
+    quiet: true
+    env:
+      - "CLIENT_VERSION=1.0.0"
+      - "SERVER_VERSION=1.1.0"
