@@ -40,20 +40,38 @@ gcloud:
 
 ## Examples
 
+### Authenticate
+
+```yaml
+gcloud:
+  description: "Authenticate"
+  groups:
+    - auth
+  command: activate-service-account
+  flags:
+    key-file: gcloud.json
+```
+
 ### Provision a VM
 
 ```yaml
 gcloud:
   description: "Create VM"
   groups:
-  - compute
-  - instances
+    - compute
+    - instances
   command: create
   arguments:
-  - myinst
+    - porter-test
   flags:
-    hostname: "example.com"
-    labels: "FOO=BAR,STUFF=THINGS"
+    project: porterci
+    zone: us-central1-a
+    machine-type: f1-micro
+    image: debian-9-stretch-v20190729
+    image-project: debian-cloud
+    boot-disk-size: 10GB
+    boot-disk-type: pd-standard
+    boot-disk-device-name: porter-test
 ```
 
 ### Configure SSH Keys
