@@ -5,10 +5,9 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestFlags_Sort(t *testing.T) {
@@ -41,8 +40,10 @@ func TestMixin_UnmarshalStep(t *testing.T) {
 
 	sort.Sort(step.Flags)
 	assert.Equal(t, Flags{
+		NewFlag("env", "CLIENT_VERSION=1.0.0", "SERVER_VERSION=1.1.0"),
 		NewFlag("hostname", "example.com"),
-		NewFlag("labels", "FOO=BAR,STUFF=THINGS")}, step.Flags)
+		NewFlag("labels", "FOO=BAR,STUFF=THINGS"),
+		NewFlag("quiet", "true")}, step.Flags)
 }
 
 func TestMixin_UnmarshalInvalidStep(t *testing.T) {

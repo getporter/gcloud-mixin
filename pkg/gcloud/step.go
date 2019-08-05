@@ -1,6 +1,8 @@
 package gcloud
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 )
 
@@ -81,9 +83,6 @@ func (flags *Flags) UnmarshalYAML(unmarshal func(interface{}) error) error {
 		f.Name = k.(string)
 
 		switch t := v.(type) {
-		case string:
-			f.Values = make([]string, 1)
-			f.Values[0] = t
 		case []interface{}:
 			f.Values = make([]string, len(t))
 			for i := range t {
@@ -94,7 +93,8 @@ func (flags *Flags) UnmarshalYAML(unmarshal func(interface{}) error) error {
 				f.Values[i] = iv
 			}
 		default:
-			return errors.Errorf("invalid yaml type for flag %s: %T", f.Name, t)
+			f.Values = make([]string, 1)
+			f.Values[0] = fmt.Sprintf("%v", v)
 		}
 
 		*flags = append(*flags, f)
