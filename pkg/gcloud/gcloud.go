@@ -68,6 +68,8 @@ func (m *Mixin) Execute() error {
 	fmt.Fprintf(m.Out, "Starting operation: %s\n", step.Description)
 
 	args := make([]string, 0, 2+len(step.Arguments)+len(step.Flags)*2)
+	// Always be in non-interactive mode
+	args = append(args, "--quiet")
 
 	// Specify the gcloud groups and command to run
 	args = append(args, step.Groups...)
