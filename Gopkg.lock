@@ -2,6 +2,22 @@
 
 
 [[projects]]
+  digest = "1:e3983013d82da8c49fb6776c6317d0da4b9cb926f1bb11af37f8c975889db042"
+  name = "github.com/PaesslerAG/gval"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0ce847fc5e6163ee05ae770a441ba497fc77dcaa"
+  version = "v1.0.1"
+
+[[projects]]
+  digest = "1:07379bf741135a43b7010cc5b52885900ce8dabf7ab1eb774ee9f331c386199d"
+  name = "github.com/PaesslerAG/jsonpath"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c18d0f043db32b5d4295e14c6518fa9160e45d15"
+  version = "0.1.1"
+
+[[projects]]
   digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
@@ -315,6 +331,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/PaesslerAG/jsonpath",
     "github.com/deislabs/porter/pkg/context",
     "github.com/deislabs/porter/pkg/test",
     "github.com/ghodss/yaml",

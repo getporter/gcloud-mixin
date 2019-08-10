@@ -22,6 +22,10 @@
   name = "gopkg.in/yaml.v2"
   version = "2.2.2"
 
+[[constraint]]
+  name = "github.com/PaesslerAG/jsonpath"
+  version = "v0.1.1"
+
 [prune]
   go-tests = true
   unused-packages = true

@@ -19,6 +19,9 @@ gcloud:
     REPEATED_FLAG:
     - FLAGVALUE1
     - FLAGVALUE2
+  outputs:
+    - name: NAME
+      jsonPath: JSONPATH
 ```
 
 ```yaml
@@ -36,6 +39,9 @@ gcloud:
     REPEATED_FLAG:
     - FLAGVALUE1
     - FLAGVALUE2
+  outputs:
+    - name: NAME
+      jsonPath: JSONPATH
 ```
 
 ## Examples
@@ -72,6 +78,9 @@ gcloud:
     boot-disk-size: 10GB
     boot-disk-type: pd-standard
     boot-disk-device-name: porter-test
+  outputs:
+    - name: vms
+      jsonPath: "$[*].id"
 ```
 
 ### Configure SSH Keys
