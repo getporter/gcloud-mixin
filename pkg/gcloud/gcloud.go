@@ -1,10 +1,14 @@
 package gcloud
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"sort"
 	"strings"
 
+	"github.com/PaesslerAG/jsonpath"
 	"github.com/pkg/errors"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -62,7 +66,7 @@ func (m *Mixin) Execute() error {
 	}
 	step := action.Steps[0]
 
-	// Always output json so that we can query it for outputs afterwards
+	// Always request json formatted output
 	step.Flags = append(step.Flags, NewFlag("format", "json"))
 
 	fmt.Fprintf(m.Out, "Starting operation: %s\n", step.Description)
@@ -90,7 +94,10 @@ func (m *Mixin) Execute() error {
 	}
 
 	cmd := m.NewCommand("gcloud", args...)
-	cmd.Stdout = m.Out
+
+	// Split stdout in a buffer and also send it back to porter
+	outputB := &bytes.Buffer{}
+	cmd.Stdout = io.MultiWriter(m.Out, outputB)
 	cmd.Stderr = m.Err
 
 	prettyCmd := fmt.Sprintf("%s %s", cmd.Path, strings.Join(cmd.Args, " "))
@@ -109,6 +116,37 @@ func (m *Mixin) Execute() error {
 		return errors.Wrap(err, fmt.Sprintf("error running command %s", prettyCmd))
 	}
 	fmt.Fprintf(m.Out, "Finished operation: %s\n", step.Description)
+
+	m.processOutputs(step.Step, outputB)
+
+	return nil
+}
+
+func (m *Mixin) processOutputs(step Step, outputB *bytes.Buffer) error {
+	if len(step.Outputs) == 0 {
+		return nil
+	}
+
+	var outputJson interface{}
+	err := json.Unmarshal(outputB.Bytes(), &outputJson)
+	if err != nil {
+		return errors.Wrapf(err, "error unmarshaling json %s", outputB.String())
+	}
+
+	for _, output := range step.Outputs {
+		value, err := jsonpath.Get(output.JsonPath, outputJson)
+		if err != nil {
+			return errors.Wrapf(err, "error evaluating jsonpath %q for output %q against %s", output.JsonPath, output.Name, outputB.String())
+		}
+		valueB, err := json.Marshal(value)
+		if err != nil {
+			return errors.Wrapf(err, "error marshaling jsonpath result %v for output %q", valueB, output.Name)
+		}
+		err = m.WriteMixinOutputToFile(output.Name, valueB)
+		if err != nil {
+			return errors.Wrapf(err, "error writing mixin output for %q", output.Name)
+		}
+	}
 
 	return nil
 }

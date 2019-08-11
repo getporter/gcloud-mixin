@@ -4,8 +4,11 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"sort"
 	"testing"
+
+	"github.com/deislabs/porter/pkg/context"
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/assert"
@@ -34,7 +37,7 @@ func TestMixin_UnmarshalInstallAction(t *testing.T) {
 		NewFlag("ssh-key-file", "./gce-ssh-key")}, step.Flags)
 }
 
-func TestMixin_UnmarshalUpgradelAction(t *testing.T) {
+func TestMixin_UnmarshalUpgradeAction(t *testing.T) {
 	b, err := ioutil.ReadFile("testdata/upgrade-input.yaml")
 	require.NoError(t, err)
 
@@ -116,4 +119,34 @@ func TestMixin_Execute(t *testing.T) {
 			require.NoError(t, err, "execute failed")
 		})
 	}
+}
+
+func TestOutputs(t *testing.T) {
+	m := NewTestMixin(t)
+
+	step := Step{
+		Outputs: []Output{
+			{Name: "ids", JsonPath: "$[*].id"},
+			{Name: "names", JsonPath: "$[*].name"},
+		},
+	}
+	output, err := ioutil.ReadFile("testdata/install-output.json")
+	require.NoError(t, err, "could not read testdata")
+
+	err = m.processOutputs(step, bytes.NewBuffer(output))
+	require.NoError(t, err, "processOutputs should not return an error")
+
+	f := filepath.Join(context.MixinOutputsDir, "ids")
+	gotOutput, err := m.FileSystem.ReadFile(f)
+	require.NoError(t, err, "could not read output file %s", f)
+
+	wantOutput := `["1085517466897181794"]`
+	assert.Equal(t, wantOutput, string(gotOutput))
+
+	f = filepath.Join(context.MixinOutputsDir, "names")
+	gotOutput, err = m.FileSystem.ReadFile(f)
+	require.NoError(t, err, "could not read output file %s", f)
+
+	wantOutput = `["porter-test"]`
+	assert.Equal(t, wantOutput, string(gotOutput))
 }

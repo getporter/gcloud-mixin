@@ -7,6 +7,11 @@ tag: deislabs/porter-gcloud-compute:v0.1.0
 mixins:
   - gcloud
 
+parameters:
+  - name: instance-name
+    type: string
+    default: porter-test
+
 credentials:
   - name: gcloud-key-file
     path: /cnab/app/gcloud.json
@@ -26,7 +31,7 @@ install:
         - instances
       command: create
       arguments:
-        - porter-test
+        - "{{ bundle.parameters.instance-name }}"
       flags:
         project: porterci
         zone: us-central1-a
@@ -36,6 +41,9 @@ install:
         boot-disk-size: 10GB
         boot-disk-type: pd-standard
         boot-disk-device-name: porter-test
+      outputs:
+        - name: vms
+          jsonPath: "$[*].id"
 
 upgrade:
   - gcloud:
@@ -52,11 +60,29 @@ upgrade:
         - instances
       command: update
       arguments:
-        - porter-test
+        - "{{ bundle.parameters.instance-name }}"
       flags:
         project: porterci
         zone: us-central1-a
         update-labels: "color=blue,ready=true"
+
+list:
+  - gcloud:
+      description: "Authenticate"
+      groups:
+        - auth
+      command: activate-service-account
+      flags:
+        key-file: gcloud.json
+  - gcloud:
+      description: "List VMs"
+      groups:
+        - compute
+        - instances
+      command: list
+      flags:
+        project: porterci
+        zones: us-central1-a
 
 uninstall:
   - gcloud:
@@ -73,7 +99,14 @@ uninstall:
         - instances
       command: delete
       arguments:
-        - porter-test
+        - "{{ bundle.parameters.instance-name }}"
       flags:
         project: porterci
         zone: us-central1-a
+
+outputs:
+  - name: vms
+    description: VM Instance IDs
+    type: array
+    applyTo:
+      - install
