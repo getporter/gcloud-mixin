@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/deislabs/porter/pkg/context"
+	"github.com/deislabs/porter/pkg/exec/builder"
 
 	"github.com/deislabs/porter/pkg/test"
 	"github.com/stretchr/testify/assert"
@@ -32,9 +33,9 @@ func TestMixin_UnmarshalInstallAction(t *testing.T) {
 	assert.Equal(t, "config-ssh", step.Command)
 
 	sort.Sort(step.Flags)
-	assert.Equal(t, Flags{
-		NewFlag("ssh-config-file", "./gce-ssh-config"),
-		NewFlag("ssh-key-file", "./gce-ssh-key")}, step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("ssh-config-file", "./gce-ssh-config"),
+		builder.NewFlag("ssh-key-file", "./gce-ssh-key")}, step.Flags)
 }
 
 func TestMixin_UnmarshalUpgradeAction(t *testing.T) {
@@ -57,8 +58,8 @@ func TestMixin_UnmarshalUpgradeAction(t *testing.T) {
 	assert.Equal(t, []string{"myinst"}, step.Arguments)
 
 	sort.Sort(step.Flags)
-	assert.Equal(t, Flags{
-		NewFlag("update-labels", "color=blue,ready=true")}, step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("update-labels", "color=blue,ready=true")}, step.Flags)
 }
 
 func TestMixin_UnmarshalUninstallAction(t *testing.T) {
@@ -81,8 +82,8 @@ func TestMixin_UnmarshalUninstallAction(t *testing.T) {
 	assert.Equal(t, []string{"myinst"}, step.Arguments)
 
 	sort.Sort(step.Flags)
-	assert.Equal(t, Flags{
-		NewFlag("delete-disks", "all")}, step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("delete-disks", "all")}, step.Flags)
 }
 
 func TestMain(m *testing.M) {

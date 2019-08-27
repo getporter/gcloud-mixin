@@ -1,6 +1,7 @@
 [[constraint]]
-  branch = "master"
+  branch = "reusable-exec"
   name = "github.com/deislabs/porter"
+  source = "github.com/carolynvs/porter"
 
 [[constraint]]
   name = "github.com/gobuffalo/packr"

@@ -5,16 +5,17 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/deislabs/porter/pkg/exec/builder"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	yaml "gopkg.in/yaml.v2"
 )
 
 func TestFlags_Sort(t *testing.T) {
-	flags := Flags{
-		NewFlag("b", "1"),
-		NewFlag("a", "2"),
-		NewFlag("c", "3"),
+	flags := builder.Flags{
+		builder.NewFlag("b", "1"),
+		builder.NewFlag("a", "2"),
+		builder.NewFlag("c", "3"),
 	}
 
 	sort.Sort(flags)
@@ -39,11 +40,11 @@ func TestMixin_UnmarshalStep(t *testing.T) {
 	assert.Equal(t, []string{"myinst"}, step.Arguments)
 
 	sort.Sort(step.Flags)
-	assert.Equal(t, Flags{
-		NewFlag("env", "CLIENT_VERSION=1.0.0", "SERVER_VERSION=1.1.0"),
-		NewFlag("hostname", "example.com"),
-		NewFlag("labels", "FOO=BAR,STUFF=THINGS"),
-		NewFlag("quiet", "true")}, step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("env", "CLIENT_VERSION=1.0.0", "SERVER_VERSION=1.1.0"),
+		builder.NewFlag("hostname", "example.com"),
+		builder.NewFlag("labels", "FOO=BAR,STUFF=THINGS"),
+		builder.NewFlag("quiet", "true")}, step.Flags)
 }
 
 func TestMixin_UnmarshalInvalidStep(t *testing.T) {
