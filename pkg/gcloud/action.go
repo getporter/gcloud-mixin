@@ -74,6 +74,14 @@ func (s Step) GetFlags() builder.Flags {
 	return append(s.Flags, builder.NewFlag("format", "json"))
 }
 
+func (s Step) GetOutputs() []builder.Output {
+	outputs := make([]builder.Output, len(s.Outputs))
+	for i := range s.Outputs {
+		outputs[i] = s.Outputs[i]
+	}
+	return outputs
+}
+
 type Groups []string
 
 func (groups *Groups) UnmarshalYAML(unmarshal func(interface{}) error) error {
@@ -104,4 +112,12 @@ func (groups *Groups) UnmarshalYAML(unmarshal func(interface{}) error) error {
 type Output struct {
 	Name     string `yaml:"name"`
 	JsonPath string `yaml:"jsonPath"`
+}
+
+func (o Output) GetName() string {
+	return o.Name
+}
+
+func (o Output) GetJsonPath() string {
+	return o.JsonPath
 }

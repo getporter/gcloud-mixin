@@ -5,3 +5,6 @@ list:
         - compute
         - instances
       command: list
+      outputs:
+        - name: vms
+          jsonPath: "$[*].id"

@@ -11,18 +11,93 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-func TestFlags_Sort(t *testing.T) {
-	flags := builder.Flags{
-		builder.NewFlag("b", "1"),
-		builder.NewFlag("a", "2"),
-		builder.NewFlag("c", "3"),
-	}
+func TestMixin_UnmarshalInstallAction(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/install-input.yaml")
+	require.NoError(t, err)
 
-	sort.Sort(flags)
+	var action Action
+	err = yaml.Unmarshal(b, &action)
+	require.NoError(t, err)
 
-	assert.Equal(t, "a", flags[0].Name)
-	assert.Equal(t, "b", flags[1].Name)
-	assert.Equal(t, "c", flags[2].Name)
+	require.Equal(t, 1, len(action.Steps))
+	step := action.Steps[0]
+
+	assert.Equal(t, "Configure SSH", step.Description)
+	assert.Equal(t, Groups{"compute"}, step.Groups)
+	assert.Equal(t, "config-ssh", step.Command)
+
+	sort.Sort(step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("ssh-config-file", "./gce-ssh-config"),
+		builder.NewFlag("ssh-key-file", "./gce-ssh-key")}, step.Flags)
+}
+
+func TestMixin_UnmarshalUpgradeAction(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/upgrade-input.yaml")
+	require.NoError(t, err)
+
+	var action Action
+	err = yaml.Unmarshal(b, &action)
+	require.NoError(t, err)
+
+	require.Equal(t, 1, len(action.Steps))
+	step := action.Steps[0]
+
+	assert.Equal(t, "Tag VM", step.Description)
+	require.Empty(t, step.Outputs)
+
+	assert.Equal(t, Groups{"compute", "instances"}, step.Groups)
+	assert.Equal(t, "update", step.Command)
+
+	assert.Equal(t, []string{"myinst"}, step.Arguments)
+
+	sort.Sort(step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("update-labels", "color=blue,ready=true")}, step.Flags)
+}
+
+func TestMixin_UnmarshalInvokeAction(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/invoke-input.yaml")
+	require.NoError(t, err)
+
+	var action Action
+	err = yaml.Unmarshal(b, &action)
+	require.NoError(t, err)
+
+	require.Equal(t, 1, len(action.Steps))
+	step := action.Steps[0]
+
+	assert.Equal(t, "List VMs", step.Description)
+	assert.Equal(t, Groups{"compute", "instances"}, step.Groups)
+	assert.Equal(t, "list", step.Command)
+	assert.Empty(t, step.Arguments)
+	assert.Equal(t, []Output{{Name: "vms", JsonPath: "$[*].id"}}, step.Outputs)
+
+	assert.Empty(t, step.Flags)
+}
+
+func TestMixin_UnmarshalUninstallAction(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/uninstall-input.yaml")
+	require.NoError(t, err)
+
+	var action Action
+	err = yaml.Unmarshal(b, &action)
+	require.NoError(t, err)
+
+	require.Equal(t, 1, len(action.Steps))
+	step := action.Steps[0]
+
+	assert.Equal(t, "Deprovision VM", step.Description)
+	require.Empty(t, step.Outputs)
+
+	assert.Equal(t, Groups{"compute", "instances"}, step.Groups)
+	assert.Equal(t, "delete", step.Command)
+
+	assert.Equal(t, []string{"myinst"}, step.Arguments)
+
+	sort.Sort(step.Flags)
+	assert.Equal(t, builder.Flags{
+		builder.NewFlag("delete-disks", "all")}, step.Flags)
 }
 
 func TestMixin_UnmarshalStep(t *testing.T) {
