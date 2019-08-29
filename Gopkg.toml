@@ -1,7 +1,6 @@
 [[constraint]]
-  branch = "reusable-exec"
+  branch = "master"
   name = "github.com/deislabs/porter"
-  source = "github.com/carolynvs/porter"
 
 [[constraint]]
   name = "github.com/gobuffalo/packr"
@@ -22,10 +21,6 @@
 [[constraint]]
   name = "gopkg.in/yaml.v2"
   version = "2.2.2"
-
-[[constraint]]
-  name = "github.com/PaesslerAG/jsonpath"
-  version = "v0.1.1"
 
 [prune]
   go-tests = true

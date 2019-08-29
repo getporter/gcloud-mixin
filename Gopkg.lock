@@ -26,8 +26,8 @@
   version = "v1.1.1"
 
 [[projects]]
-  branch = "reusable-exec"
-  digest = "1:75d4c586c200094791fa012e06a9e1a7c84c00b9efef2134603b2777d8477035"
+  branch = "master"
+  digest = "1:ed41570223d8d13897c64ce60c1ed5d9c89f55f94d03adf8ced042af512d8852"
   name = "github.com/deislabs/porter"
   packages = [
     "pkg/context",
@@ -35,8 +35,7 @@
     "pkg/test",
   ]
   pruneopts = "UT"
-  revision = "d30aa244b003d66b27bb2028e2f7df743739bc05"
-  source = "github.com/carolynvs/porter"
+  revision = "0bef6f19585c943ed99ffeb4df63b569a155c6ba"
 
 [[projects]]
   digest = "1:2cd7915ab26ede7d95b8749e6b1f933f1c6d5398030684e6505940a10f31cfda"
@@ -333,7 +332,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/PaesslerAG/jsonpath",
     "github.com/deislabs/porter/pkg/context",
     "github.com/deislabs/porter/pkg/exec/builder",
     "github.com/deislabs/porter/pkg/test",
