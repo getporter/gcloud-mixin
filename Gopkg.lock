@@ -26,15 +26,17 @@
   version = "v1.1.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:9d12b7590ad4a39a29b55bde07abaa6eb2bfdddfb6b91b6018f57a1d8f388eda"
+  branch = "reusable-exec"
+  digest = "1:75d4c586c200094791fa012e06a9e1a7c84c00b9efef2134603b2777d8477035"
   name = "github.com/deislabs/porter"
   packages = [
     "pkg/context",
+    "pkg/exec/builder",
     "pkg/test",
   ]
   pruneopts = "UT"
-  revision = "51221b2438ae7490880982840cc5003a16b8243e"
+  revision = "d30aa244b003d66b27bb2028e2f7df743739bc05"
+  source = "github.com/carolynvs/porter"
 
 [[projects]]
   digest = "1:2cd7915ab26ede7d95b8749e6b1f933f1c6d5398030684e6505940a10f31cfda"
@@ -333,6 +335,7 @@
   input-imports = [
     "github.com/PaesslerAG/jsonpath",
     "github.com/deislabs/porter/pkg/context",
+    "github.com/deislabs/porter/pkg/exec/builder",
     "github.com/deislabs/porter/pkg/test",
     "github.com/ghodss/yaml",
     "github.com/gobuffalo/packr/v2",
