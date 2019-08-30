@@ -20,11 +20,6 @@ func (m *Mixin) Execute() error {
 		return err
 	}
 
-	output, err := builder.ExecuteSingleStepAction(m.Context, action)
-	if err != nil {
-		return err
-	}
-	step := action.Steps[0]
-
-	return builder.ProcessJsonPathOutputs(m.Context, step, output)
+	_, err = builder.ExecuteSingleStepAction(m.Context, action)
+	return err
 }
