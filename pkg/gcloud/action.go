@@ -5,6 +5,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+var _ builder.ExecutableAction = Action{}
+
 type Action struct {
 	Steps []Steps // using UnmarshalYAML so that we don't need a custom type per action
 }
@@ -39,6 +41,9 @@ func (a Action) GetSteps() []builder.ExecutableStep {
 type Steps struct {
 	Step `yaml:"gcloud"`
 }
+
+var _ builder.ExecutableStep = Step{}
+var _ builder.StepWithOutputs = Step{}
 
 type Step struct {
 	Description string        `yaml:"description"`
@@ -108,6 +113,8 @@ func (groups *Groups) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 	return nil
 }
+
+var _ builder.OutputJsonPath = Output{}
 
 type Output struct {
 	Name     string `yaml:"name"`
