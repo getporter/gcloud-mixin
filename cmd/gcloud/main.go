@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/deislabs/porter-gcloud/pkg/gcloud"
+	"get.porter.sh/mixin/gcloud/pkg/gcloud"
 	"github.com/spf13/cobra"
 )
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/deislabs/porter-gcloud/pkg/gcloud"
-	"github.com/deislabs/porter/pkg/porter/version"
+	"get.porter.sh/mixin/gcloud/pkg/gcloud"
+	"get.porter.sh/porter/pkg/porter/version"
 	"github.com/spf13/cobra"
 )
 
