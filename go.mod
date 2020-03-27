@@ -3,7 +3,7 @@ module get.porter.sh/mixin/gcloud
 go 1.13
 
 require (
-	get.porter.sh/porter v0.22.1-beta.1
+	get.porter.sh/porter v0.25.0-beta.1
 	github.com/PaesslerAG/gval v1.0.1
 	github.com/PaesslerAG/jsonpath v0.1.1
 	github.com/davecgh/go-spew v1.1.1
