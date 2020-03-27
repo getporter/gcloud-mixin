@@ -6,9 +6,16 @@ import (
 )
 
 var _ builder.ExecutableAction = Action{}
+var _ builder.BuildableAction = Action{}
 
 type Action struct {
-	Steps []Steps // using UnmarshalYAML so that we don't need a custom type per action
+	Name  string
+	Steps []Step // using UnmarshalYAML so that we don't need a custom type per action
+}
+
+// MakeSteps builds a slice of Steps for data to be unmarshaled into.
+func (a Action) MakeSteps() interface{} {
+	return &[]Step{}
 }
 
 // UnmarshalYAML takes any yaml in this form
@@ -16,15 +23,18 @@ type Action struct {
 // - gcloud: ...
 // and puts the steps into the Action.Steps field
 func (a *Action) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	var steps []Steps
-	results, err := builder.UnmarshalAction(unmarshal, &steps)
+	results, err := builder.UnmarshalAction(unmarshal, a)
 	if err != nil {
 		return err
 	}
 
-	for _, result := range results {
-		step := result.(*[]Steps)
-		a.Steps = append(a.Steps, *step...)
+	for actionName, action := range results {
+		a.Name = actionName
+		for _, result := range action {
+			step := result.(*[]Step)
+			a.Steps = append(a.Steps, *step...)
+		}
+		break // There is only 1 action
 	}
 	return nil
 }
@@ -38,14 +48,14 @@ func (a Action) GetSteps() []builder.ExecutableStep {
 	return steps
 }
 
-type Steps struct {
-	Step `yaml:"gcloud"`
+type Step struct {
+	Instruction `yaml:"gcloud"`
 }
 
 var _ builder.ExecutableStep = Step{}
 var _ builder.StepWithOutputs = Step{}
 
-type Step struct {
+type Instruction struct {
 	Description string        `yaml:"description"`
 	Groups      Groups        `yaml:"groups"`
 	Command     string        `yaml:"command"`
