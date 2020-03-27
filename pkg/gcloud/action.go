@@ -56,12 +56,13 @@ var _ builder.ExecutableStep = Step{}
 var _ builder.StepWithOutputs = Step{}
 
 type Instruction struct {
-	Description string        `yaml:"description"`
-	Groups      Groups        `yaml:"groups"`
-	Command     string        `yaml:"command"`
-	Arguments   []string      `yaml:"arguments,omitempty"`
-	Flags       builder.Flags `yaml:"flags,omitempty"`
-	Outputs     []Output      `yaml:"outputs,omitempty"`
+	Description    string        `yaml:"description"`
+	Groups         Groups        `yaml:"groups"`
+	Command        string        `yaml:"command"`
+	Arguments      []string      `yaml:"arguments,omitempty"`
+	Flags          builder.Flags `yaml:"flags,omitempty"`
+	Outputs        []Output      `yaml:"outputs,omitempty"`
+	SuppressOutput bool          `yaml:"suppress-output,omitempty"`
 }
 
 func (s Step) GetCommand() string {
@@ -95,6 +96,10 @@ func (s Step) GetOutputs() []builder.Output {
 		outputs[i] = s.Outputs[i]
 	}
 	return outputs
+}
+
+func (s Step) SuppressesOutput() bool {
+	return s.SuppressOutput
 }
 
 type Groups []string

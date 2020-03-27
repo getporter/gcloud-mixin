@@ -30,6 +30,9 @@ func TestMixin_UnmarshalInstallAction(t *testing.T) {
 	assert.Equal(t, builder.Flags{
 		builder.NewFlag("ssh-config-file", "./gce-ssh-config"),
 		builder.NewFlag("ssh-key-file", "./gce-ssh-key")}, step.Flags)
+
+	assert.Equal(t, false, step.SuppressOutput)
+	assert.Equal(t, false, step.SuppressesOutput())
 }
 
 func TestMixin_UnmarshalUpgradeAction(t *testing.T) {
@@ -130,4 +133,18 @@ func TestMixin_UnmarshalInvalidStep(t *testing.T) {
 	err = yaml.Unmarshal(b, &step)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "invalid yaml type for flag env")
+}
+
+func TestStep_SuppressesOutput(t *testing.T) {
+	b, err := ioutil.ReadFile("testdata/step-input-suppress-output.yaml")
+	require.NoError(t, err)
+
+	var action Action
+	err = yaml.Unmarshal(b, &action)
+	require.NoError(t, err)
+	require.Len(t, action.Steps, 1)
+
+	step := action.Steps[0]
+	assert.Equal(t, true, step.SuppressOutput)
+	assert.Equal(t, true, step.SuppressesOutput())
 }
