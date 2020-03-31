@@ -54,6 +54,7 @@ type Step struct {
 
 var _ builder.ExecutableStep = Step{}
 var _ builder.StepWithOutputs = Step{}
+var _ builder.SuppressesOutput = Step{}
 
 type Instruction struct {
 	Description    string        `yaml:"description"`
