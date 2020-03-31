@@ -1,0 +1,7 @@
+action:
+  - gcloud:
+      description: "Supressed Surprise"
+      arguments:
+        - "surprise"
+        - "me"
+      suppress-output: true
