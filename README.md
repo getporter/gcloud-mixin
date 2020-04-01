@@ -25,6 +25,8 @@ gcloud:
       jsonPath: JSONPATH
 ```
 
+You can also specify a list of `groups`:
+
 ```yaml
 gcloud:
   description: "Description of the command"
@@ -32,17 +34,6 @@ gcloud:
   - GROUP 1
   - GROUP 2
   command: COMMAND
-  arguments:
-  - arg1
-  - arg2
-  flags:
-    FLAGNAME: FLAGVALUE
-    REPEATED_FLAG:
-    - FLAGVALUE1
-    - FLAGVALUE2
-  outputs:
-    - name: NAME
-      jsonPath: JSONPATH
 ```
 
 ### Suppress Output
