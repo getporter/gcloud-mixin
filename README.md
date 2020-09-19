@@ -2,6 +2,10 @@
 
 This is a mixin for Porter that provides the gcloud CLI.
 
+[![Build Status](https://dev.azure.com/getporter/porter/_apis/build/status/gcloud-mixin?branchName=main)](https://dev.azure.com/getporter/porter/_build/latest?definitionId=7&branchName=main)
+
+<img src="https://porter.sh/images/mixins/google.png" align="right" width="150px"/>
+
 ## Mixin Syntax
 
 See the [gcloud CLI Command Reference](https://cloud.google.com/sdk/gcloud/reference/) for the supported commands
