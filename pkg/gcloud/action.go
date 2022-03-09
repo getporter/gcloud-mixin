@@ -70,6 +70,10 @@ func (s Step) GetCommand() string {
 	return "gcloud"
 }
 
+func (s Step) GetWorkingDir() string {
+	return "."
+}
+
 func (s Step) GetArguments() []string {
 	args := make([]string, 0, len(s.Arguments)+len(s.Groups)+2)
 
