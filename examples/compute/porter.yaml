@@ -1,12 +1,18 @@
+schemaVersion: 1.0.0
 name: gcloud-compute
-version: 0.1.0
+version: 0.2.0
 description: "An example Porter gcloud compute bundle"
-tag: getporter/gcloud-compute
+registry: localhost:5000/gcloud-compute
 
 mixins:
   - gcloud
 
 parameters:
+  - name: project
+    type: string
+  - name: zone
+    type: string
+    default: us-central1-a
   - name: instance-name
     type: string
     default: porter-test
@@ -30,10 +36,10 @@ install:
         - instances
       command: create
       arguments:
-        - "{{ bundle.parameters.instance-name }}"
+        - ${ bundle.parameters.instance-name }
       flags:
-        project: porterci
-        zone: us-central1-a
+        project: ${ bundle.parameters.project }
+        zone: ${ bundle.parameters.zone }
         machine-type: f1-micro
         image: debian-9-stretch-v20190729
         image-project: debian-cloud
@@ -59,10 +65,10 @@ upgrade:
         - instances
       command: update
       arguments:
-        - "{{ bundle.parameters.instance-name }}"
+        - ${ bundle.parameters.instance-name }
       flags:
-        project: porterci
-        zone: us-central1-a
+        project: ${ bundle.parameters.project }
+        zone: ${ bundle.parameters.zone }
         update-labels: "color=blue,ready=true"
 
 list:
@@ -80,8 +86,8 @@ list:
         - instances
       command: list
       flags:
-        project: porterci
-        zones: us-central1-a
+        project: ${ bundle.parameters.project }
+        zones: ${ bundle.parameters.zone }
 
 uninstall:
   - gcloud:
@@ -98,10 +104,10 @@ uninstall:
         - instances
       command: delete
       arguments:
-        - "{{ bundle.parameters.instance-name }}"
+        - ${ bundle.parameters.instance-name }
       flags:
-        project: porterci
-        zone: us-central1-a
+        project: ${ bundle.parameters.project }
+        zone: ${ bundle.parameters.zone }
 
 outputs:
   - name: vms

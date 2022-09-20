@@ -4,7 +4,8 @@ This example creates an Google Cloud VM, labels it and then deletes the test VM.
 
 # Credentials
 
-This is what your credentials file should look like, where the path is the path to your the service key for a service account that you have created with the Compute Instance Admin Role.
+This is what your credentials file should look like, where the path is the path to the service key for a service account that you have created with the Service Account User and Compute Admin roles.
+The project must have the Compute Engine API service enabled.
 
 ```yaml
 name: gcloud
