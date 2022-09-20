@@ -1,18 +1,16 @@
-//go:generate packr2
 package gcloud
 
 import (
-	"get.porter.sh/porter/pkg/context"
+	"get.porter.sh/porter/pkg/runtime"
 )
 
 type Mixin struct {
-	*context.Context
+	runtime.RuntimeConfig
 }
 
 // New gcloud mixin client, initialized with useful defaults.
-func New() (*Mixin, error) {
+func New() *Mixin {
 	return &Mixin{
-		Context: context.New(),
-	}, nil
-
+		RuntimeConfig: runtime.NewConfig(),
+	}
 }
