@@ -10,7 +10,7 @@ replace github.com/spf13/viper => github.com/getporter/viper v1.7.1-porter.2.0.2
 
 require (
 	get.porter.sh/magefiles v0.3.2
-	get.porter.sh/porter v1.0.0-rc.1.0.20220919191751-edd731c0f07b
+	get.porter.sh/porter v1.0.0-rc.2
 	github.com/ghodss/yaml v1.0.0
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.5.0
