@@ -10,7 +10,7 @@ func buildInstallCommand(m *gcloud.Mixin) *cobra.Command {
 		Use:   "install",
 		Short: "Execute the install functionality of this mixin",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return m.Execute()
+			return m.Execute(cmd.Context())
 		},
 	}
 	return cmd
