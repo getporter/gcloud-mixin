@@ -2,7 +2,7 @@
 
 This is a mixin for Porter that provides the gcloud CLI.
 
-[![Build Status](https://dev.azure.com/getporter/porter/_apis/build/status/gcloud-mixin?branchName=main)](https://dev.azure.com/getporter/porter/_build/latest?definitionId=7&branchName=main)
+[![porter/gcloud-mixin](https://github.com/getporter/gcloud-mixin/actions/workflows/gcloud-mixin.yml/badge.svg)](https://github.com/getporter/gcloud-mixin/actions/workflows/gcloud-mixin.yml)
 
 <img src="https://porter.sh/images/mixins/google.png" align="right" width="150px"/>
 
